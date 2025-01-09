@@ -1,0 +1,33 @@
+<div class="register-container">
+  <h2>Register</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" [(ngModel)]="email" name="email" required />
+    </div>
+    <div class="form-group">
+      <label for="nume">Name:</label>
+      <input type="text" id="nume" [(ngModel)]="nume" name="nume" required />
+    </div>
+    <div class="form-group">
+      <label for="tip_boala">Tip Boala:</label>
+      <select id="tip_boala" [(ngModel)]="tip_boala" name="tip_boala" required>
+        <option *ngFor="let specialization of specializations" [value]="specialization">
+          {{ specialization }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="varsta">Age:</label>
+      <input type="number" id="varsta" [(ngModel)]="varsta" name="varsta" required />
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" [(ngModel)]="password" name="password" required />
+    </div>
+    <button type="submit">Create</button>
+  </form>
+
+  <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</div>

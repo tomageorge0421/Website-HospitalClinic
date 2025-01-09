@@ -1,0 +1,60 @@
+<div class="user-page-container">
+  <!-- User Info Section -->
+  <section *ngIf="userData" class="user-info">
+    <h2>Welcome, {{ userData.nume }}</h2>
+    <p>Email: {{ userData.email }}</p>
+    <p>Condition: {{ userData.tip_boala }}</p>
+    <p>Age: {{ userData.varsta }} years</p>
+  </section>
+
+  <!-- Compatible Doctors Section -->
+  <section *ngIf="compatibleDoctors.length > 0" class="compatible-doctors">
+    <h3>Your Compatible Doctors</h3>
+    <ul>
+      <li *ngFor="let doctor of compatibleDoctors">
+        Dr. {{ doctor.nume }} - Specialty: {{ doctor.specializare }}
+      </li>
+    </ul>
+  </section>
+
+  <!-- Appointments Section -->
+  <section *ngIf="appointmentDoctors.length > 0" class="appointments">
+    <h3>Your Upcoming Appointments</h3>
+    <ul>
+      <li *ngFor="let appointment of appointmentDoctors">
+        <strong>Dr. {{ appointment.doctorName }}</strong> -
+        {{ appointment.appointmentDay }} at {{ appointment.appointmentHour }}:00
+      </li>
+    </ul>
+  </section>
+
+  <!-- Make an Appointment Section -->
+  <section class="make-appointment">
+    <h3>Make an Appointment</h3>
+
+    <!-- Doctor Selection -->
+    <label for="doctor-select">Select a Doctor</label>
+    <select id="doctor-select" [(ngModel)]="selectedDoctorId" (change)="onDoctorSelect()">
+      <option [value]="null" disabled>Select a doctor</option>
+      <option *ngFor="let doctor of compatibleDoctors" [value]="doctor.id">
+        Dr. {{ doctor.nume }}
+      </option>
+    </select>
+
+    <!-- Day Displayed Automatically from Selected Doctor -->
+    <label for="day-display">Selected Day</label>
+    <input id="day-display" type="text" [(ngModel)]="selectedDay" readonly />
+
+    <!-- Available Hours Selection -->
+    <label for="hour-select" *ngIf="availableHours.length > 0">Select an Hour</label>
+    <select id="hour-select" *ngIf="availableHours.length > 0" [(ngModel)]="selectedHour">
+      <option [value]="null" disabled>Select an hour</option>
+      <option *ngFor="let hour of availableHours">{{ hour }}:00</option>
+    </select>
+
+    <!-- Book Appointment Button -->
+    <button (click)="bookAppointment()" [disabled]="!selectedHour" class="book-btn">
+      Confirm Appointment
+    </button>
+  </section>
+</div>

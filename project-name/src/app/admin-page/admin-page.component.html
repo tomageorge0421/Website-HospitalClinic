@@ -1,0 +1,352 @@
+<div class="admin-container">
+  <h2>Admin - Manage Users, Doctors, and Compatibilities</h2>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Add User Form -->
+  <section class="add-section">
+    <h3>Add New User</h3>
+    <form (ngSubmit)="addUser()">
+      <label for="new-user-email">Email:</label>
+      <input
+        type="email"
+        id="new-user-email"
+        [(ngModel)]="newUser.email"
+        name="email"
+        required
+      />
+      <label for="new-user-name">Name:</label>
+      <input
+        type="text"
+        id="new-user-name"
+        [(ngModel)]="newUser.nume"
+        name="nume"
+        required
+      />
+      <label for="new-user-condition">Condition Type:</label>
+      <input
+        type="text"
+        id="new-user-condition"
+        [(ngModel)]="newUser.tip_boala"
+        name="tip_boala"
+        required
+      />
+      <label for="new-user-age">Age:</label>
+      <input
+        type="number"
+        id="new-user-age"
+        [(ngModel)]="newUser.varsta"
+        name="varsta"
+        required
+      />
+      <label for="new-user-password">Password:</label>
+      <input
+        type="password"
+        id="new-user-password"
+        [(ngModel)]="newUser.password"
+        name="password"
+        required
+      />
+      <button type="submit">Add User</button>
+    </form>
+  </section>
+
+  <!-- User Table -->
+  <section class="list-section">
+    <h3>Users</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Name</th>
+          <th>Condition</th>
+          <th>Age</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td> <!-- Display User ID -->
+          <td>{{ user.email }}</td>
+          <td>{{ user.nume }}</td>
+          <td>{{ user.tip_boala }}</td>
+          <td>{{ user.varsta }}</td>
+          <td>
+            <button (click)="getUserById(user.id!)">Edit</button>
+            <button (click)="deleteUser(user.id!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  
+
+  <!-- Edit User Form -->
+  <section *ngIf="selectedUser" class="edit-section">
+    <h3>Edit User</h3>
+    <form (ngSubmit)="updateUser(selectedUser.id!)">
+      <label for="edit-user-email">Email:</label>
+      <input
+        type="email"
+        id="edit-user-email"
+        [(ngModel)]="userToUpdate.email"
+        name="email"
+        required
+      />
+      <label for="edit-user-name">Name:</label>
+      <input
+        type="text"
+        id="edit-user-name"
+        [(ngModel)]="userToUpdate.nume"
+        name="nume"
+        required
+      />
+      <label for="edit-user-condition">Condition Type:</label>
+      <input
+        type="text"
+        id="edit-user-condition"
+        [(ngModel)]="userToUpdate.tip_boala"
+        name="tip_boala"
+        required
+      />
+      <label for="edit-user-age">Age:</label>
+      <input
+        type="number"
+        id="edit-user-age"
+        [(ngModel)]="userToUpdate.varsta"
+        name="varsta"
+        required
+      />
+      <label for="edit-user-password">Password:</label>
+      <input
+        type="password"
+        id="edit-user-password"
+        [(ngModel)]="userToUpdate.password"
+        name="password"
+        required
+      />
+      <button type="submit">Save Changes</button>
+      <button type="button" (click)="resetUpdateForm()">Cancel</button>
+    </form>
+  </section>
+
+  <!-- Add Doctor Form -->
+  <section class="add-section">
+    <h3>Add New Doctor</h3>
+    <form (ngSubmit)="addDoctor()">
+      <label for="new-doctor-email">Email:</label>
+      <input
+        type="email"
+        id="new-doctor-email"
+        [(ngModel)]="newDoctor.email"
+        name="email"
+        required
+      />
+      <label for="new-doctor-name">Name:</label>
+      <input
+        type="text"
+        id="new-doctor-name"
+        [(ngModel)]="newDoctor.nume"
+        name="nume"
+        required
+      />
+      <label for="new-doctor-specialization">Specialization:</label>
+      <input
+        type="text"
+        id="new-doctor-specialization"
+        [(ngModel)]="newDoctor.specializare"
+        name="specializare"
+        required
+      />
+      <label for="new-doctor-day">Working Day:</label>
+      <input
+        type="text"
+        id="new-doctor-day"
+        [(ngModel)]="newDoctor.zi_lucru"
+        name="zi_lucru"
+        required
+      />
+      <label for="new-doctor-start-time">Start Time:</label>
+      <input
+        type="number"
+        id="new-doctor-start-time"
+        [(ngModel)]="newDoctor.ora_start"
+        name="ora_start"
+        required
+      />
+      <label for="new-doctor-end-time">End Time:</label>
+      <input
+        type="number"
+        id="new-doctor-end-time"
+        [(ngModel)]="newDoctor.ora_finish"
+        name="ora_finish"
+        required
+      />
+      <button type="submit">Add Doctor</button>
+    </form>
+  </section>
+
+  <!-- Doctor Table -->
+  <section class="list-section">
+    <h3>Doctors</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Name</th>
+          <th>Specialization</th>
+          <th>Working Day</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doctor of doctors">
+          <td>{{ doctor.id }}</td> <!-- Display Doctor ID -->
+          <td>{{ doctor.email }}</td>
+          <td>{{ doctor.nume }}</td>
+          <td>{{ doctor.specializare }}</td>
+          <td>{{ doctor.zi_lucru }}</td>
+          <td>{{ doctor.ora_start }}</td>
+          <td>{{ doctor.ora_finish }}</td>
+          <td>
+            <button (click)="getDoctorById(doctor.id!)">Edit</button>
+            <button (click)="deleteDoctor(doctor.id!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  
+
+  <!-- Edit Doctor Form -->
+  <section *ngIf="selectedDoctor" class="edit-section">
+    <h3>Edit Doctor</h3>
+    <form (ngSubmit)="updateDoctor(selectedDoctor.id!)">
+      <label for="edit-doctor-email">Email:</label>
+      <input
+        type="email"
+        id="edit-doctor-email"
+        [(ngModel)]="doctorToUpdate.email"
+        name="email"
+        required
+      />
+      <label for="edit-doctor-name">Name:</label>
+      <input
+        type="text"
+        id="edit-doctor-name"
+        [(ngModel)]="doctorToUpdate.nume"
+        name="nume"
+        required
+      />
+      <label for="edit-doctor-specialization">Specialization:</label>
+      <input
+        type="text"
+        id="edit-doctor-specialization"
+        [(ngModel)]="doctorToUpdate.specializare"
+        name="specializare"
+        required
+      />
+      <label for="edit-doctor-day">Working Day:</label>
+      <input
+        type="text"
+        id="edit-doctor-day"
+        [(ngModel)]="doctorToUpdate.zi_lucru"
+        name="zi_lucru"
+        required
+      />
+      <label for="edit-doctor-start-time">Start Time:</label>
+      <input
+        type="number"
+        id="edit-doctor-start-time"
+        [(ngModel)]="doctorToUpdate.ora_start"
+        name="ora_start"
+        required
+      />
+      <label for="edit-doctor-end-time">End Time:</label>
+      <input
+        type="number"
+        id="edit-doctor-end-time"
+        [(ngModel)]="doctorToUpdate.ora_finish"
+        name="ora_finish"
+        required
+      />
+      <button type="submit">Save Changes</button>
+      <button type="button" (click)="resetDoctorUpdateForm()">Cancel</button>
+    </form>
+  </section>
+  <!-- Compatibility Management -->
+  <section class="list-section">
+    <h3>Compatibilities</h3>
+    <button (click)="autoCreateCompatibilities()">Auto-Create Compatibilities</button>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Doctor</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let compatibility of compatibilities">
+          <td>{{ compatibility.id }}</td> <!-- Display Compatibility ID -->
+          <td>{{ compatibility.user.nume }} ({{ compatibility.user.email }})</td>
+          <td>{{ compatibility.doctor.nume }} ({{ compatibility.doctor.email }})</td>
+          <td>
+            <button (click)="deleteCompatibility(compatibility.id!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Add Doctor Form -->
+  <div class="add-programare">
+    <h2>Add New Appointment</h2>
+    <form (ngSubmit)="addProgramare()">
+      <label for="clientId">Client ID:</label>
+      <input type="number" id="clientId" [(ngModel)]="newProgramare.clientId" name="clientId" required />
+
+      <label for="doctorId">Doctor ID:</label>
+      <input type="number" id="doctorId" [(ngModel)]="newProgramare.doctorId" name="doctorId" required />
+
+      <label for="oraProgramare">Hour:</label>
+      <input type="number" id="oraProgramare" [(ngModel)]="newProgramare.oraProgramare" name="oraProgramare" required />
+
+      <button type="submit">Add Appointment</button>
+    </form>
+  </div>
+
+  <h2>Appointments List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Client</th>
+        <th>Doctor</th>
+        <th>Day</th>
+        <th>Hour</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let programare of programari">
+        <td>{{ programare.id }}</td>
+        <td>{{ programare.client.nume }}</td>
+        <td>{{ programare.doctor.nume }}</td>
+        <td>{{ programare.ziLucru }}</td>
+        <td>{{ programare.oraProgramare }}</td>
+        <td>
+          <button (click)="deleteProgramare(programare.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
